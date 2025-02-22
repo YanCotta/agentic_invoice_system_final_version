@@ -32,59 +32,90 @@ Establish a solid foundation for the 10-day development process.
 - Defined project structure:
 
 ```python 
-/brim_invoice_project
+brim_invoice_nextjs/
+├── .git/
+├── .gitignore
+├── Dockerfile
+├── README.md
 ├── agents/
-│   ├── base_agent.py             # Base agent class for shared functionality
-│   ├── extractor_agent.py        # Extracts data from invoices using OpenAI GPT-4o-mini
-│   ├── validator_agent.py        # Validates fields and detects anomalies
-│   ├── matching_agent.py         # Matches POs using fuzzy logic
-│   ├── human_review_agent.py     # Routes flagged invoices for manual review
-│   └── fallback_agent.py         # Regex-based backup extraction
-│
+│   ├── __init__.py
+│   ├── base_agent.py
+│   ├── extractor_agent.py
+│   ├── fallback_agent.py
+│   ├── human_review_agent.py
+│   ├── matching_agent.py
+│   └── validator_agent.py
 ├── api/
-│   ├── app.py                    # Main FastAPI backend with upload and invoice retrieval endpoints
-│   ├── human_review_api.py       # FastAPI endpoints for human review (wrapper around review_api.py)
-│   └── review_api.py             # Core review API logic for manual corrections
-│
+│   ├── __init__.py
+│   ├── app.py
+│   ├── human_review_api.py
+│   └── review_api.py
 ├── config/
-│   ├── settings.py               # API keys, paths, configs
-│   ├── logging_config.py         # Structured JSON logging setup
-│   └── monitoring.py             # Performance tracking for agent workflows
-│
+│   ├── __init__.py
+│   ├── logging_config.py
+│   ├── monitoring.py
+│   └── settings.py
 ├── data/
-│   ├── raw/
-│   │   ├── invoices/             # 35 raw invoice PDFs
-│   │   ├── test_samples/         # 5 test-case PDFs for RAG (e.g., invoice_standard_example.pdf)
-│   │   └── vendor_data.csv       # PO reference data
 │   ├── processed/
-│   │   ├── structured_invoices.json  # Processed invoice results
-│   │   └── corrections.json      # Human review corrections
-│   └── temp/                     # Temporary directory for uploaded PDFs
-│
+│   │   ├── anomalies.json
+│   │   └── structured_invoices.json
+│   ├── raw/
+│   │   ├── invoices/
+│   │   ├── test_invoice.txt
+│   │   └── vendor_data.csv
+│   └── test_samples/
+│       └── various invoice examples (.pdf)
 ├── data_processing/
-│   ├── document_parser.py        # PDF parsing logic
-│   ├── ocr_helper.py             # Pytesseract wrapper for OCR
-│   ├── anomaly_detection.py      # Flags outliers and duplicates
-│   ├── confidence_scoring.py     # Computes extraction confidence
-│   └── rag_helper.py             # FAISS-based RAG for error detection
-│
+│   ├── __init__.py
+│   ├── anomaly_detection.py
+│   ├── confidence_scoring.py
+│   ├── document_parser.py
+│   ├── ocr_helper.py
+│   ├── po_matcher.py
+│   └── rag_helper.py
+frontend-nextjs/
+├── public/
+│   ├── file.svg
+│   ├── globe.svg
+│   ├── next.svg
+│   ├── vercel.svg
+│   └── window.svg
+├── src/
+│   ├── components/
+│   │   └── Layout.tsx
+│   ├── pages/
+│   │   ├── _app.tsx
+│   │   ├── index.tsx
+│   │   ├── invoices.tsx
+│   │   ├── metrics.tsx
+│   │   ├── review.tsx
+│   │   └── upload.tsx
+│   └── styles/
+│       └── globals.css
+├── eslint.config.mjs
+├── next.config.ts
+├── package.json
+├── postcss.config.mjs
+├── tailwind.config.ts
+└── tsconfig.json
+├── main.py
 ├── models/
-│   ├── invoice.py                # Pydantic model for invoice data
-│   └── validation_schema.py      # Pydantic schema for data validation
-│
-├── workflows/
-│   └── orchestrator.py           # Orchestrates the multi-agent pipeline
-│
-├── frontend/
-│   └── app.py                    # Streamlit frontend for upload, table, and review
-│
+│   ├── __init__.py
+│   ├── invoice.py
+│   └── validation_schema.py
+├── requirements.txt
 ├── tests/
-│   ├── test_agents.py            # Unit tests for agents
-│   └── test_workflows.py         # Integration tests for workflows
-│
-├── requirements.txt              # Project dependencies
-├── README.md                     # Project documentation
-└── architecture_diagram.png      # System architecture diagram
+│   ├── __init__.py
+│   ├── load_tests.py
+│   ├── test_agents.py
+│   ├── test_endpoints.py
+│   ├── test_frontend.js
+│   ├── test_utils.py
+│   └── test_workflows.py
+└── workflows/
+    ├── __init__.py
+    ├── orchestrator.py
+    └── pipeline.py
 ```
 
 #### 🏁 Outcome
