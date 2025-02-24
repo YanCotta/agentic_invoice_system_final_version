@@ -225,7 +225,63 @@ brim_invoice_nextjs/
     ├── pipeline.py
     └── __pycache__/
         └── … (compiled files)
-
+```
+### Architecture Diagram
+```
++-------------------+       +-------------------+
+|   Streamlit UI    |       |    Next.js UI     |
+| (Python-based)    |       | (Production-ready)|
+| - Streamlit       |       | - React, Next.js  |
+|   Dashboard       |       | - Tailwind CSS    |
++-------------------+       +-------------------+
+           |                         |
+           +-----------+-------------+
+                       |
+                +------+------+
+                | FastAPI     |
+                | Backend     |
+                | - WebSocket |
+                |   Support   |
+                +------+------+
+                       |
+           +-----------+-------------+
+           |                         |
++-------------------+       +-------------------+
+|   Extraction      |       |   Validation      |
+|   Agent           |       |   Agent           |
+| - gpt-4o-mini     |       | - Pydantic Models |
+| - pdfplumber      |       |                   |
+| - pytesseract     |       +-------------------+
++-------------------+                |
+           |                         |
+           +-----------+-------------+
+                       |
+                +------+------+
+                | PO Matching |
+                |    Agent    |
+                | - Fuzzy      |
+                |   Matching   |
+                +------+------+
+                       |
+                +------+------+
+                | Human Review|
+                |    Agent    |
+                | - Confidence|
+                |   < 0.9     |
+                +------+------+
+                       |
+                +------+------+
+                | Fallback    |
+                |    Agent    |
+                | - FAISS RAG  |
+                +------+------+
+                       |
+                +------+------+
+                | Data Storage|
+                | - structured|
+                |   _invoices |
+                | - anomalies  |
+                +------+------+
 ```
 
 ## 🔧 Setup Guide
