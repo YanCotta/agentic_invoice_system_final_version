@@ -195,7 +195,7 @@ brim_invoice_nextjs/
 ├── api/
 │   ├── __init__.py
 │   ├── app.py
-│   ├── review_api.py  <!-- consolidated review functionality -->
+│   ├── review_api.py  
 │   └── __pycache__/
 │       └── … (compiled files)
 ├── config/
