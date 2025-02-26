@@ -10,7 +10,7 @@
 
 A sophisticated invoice processing system that leverages LangChain's multi-agent workflow to automate extraction, validation, and purchase order (PO) matching. Built as a technical challenge for Brim's Agentic AI Engineer position, this solution reduces manual processing time by over 75% while ensuring high accuracy through intelligent error handling and human-in-the-loop review processes.
 
-**Key Updates:**
+**Key Updates in this branch:**
 - Migrated from JSON-based storage to SQLite (`invoices.db`) for invoice metadata, boosting scalability and query efficiency.
 - Integrated AWS S3 for PDF storage with public read access, replacing local file storage for better reliability and scalability.
 
@@ -163,7 +163,7 @@ A sophisticated invoice processing system that leverages LangChain's multi-agent
   - Verified `frontend-nextjs/src/pages/anomalies.tsx` integration, confirming it’s linked to the backend via `lib/api.ts` for anomaly retrieval, and kept as a functional page.
   - Ensured `lib/api.ts` only handles API client logic without duplicating backend processing, maintaining clear separation of concerns.
 
-#### Day 7 and 8: Implemented SQLite and AWS (S3) Database
+#### Day 7 and 8: Creation of this New Brach -> Implemented SQLite and AWS (S3) Database
 
 - 🎯 **Objectives Achieved**
   - Migrated from JSON storage to SQLite database for improved scalability
