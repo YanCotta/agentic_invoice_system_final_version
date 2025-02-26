@@ -1,10 +1,12 @@
-# 📊 Brim Invoice Processing System
+# 📊 Brim Invoice Processing System Version #3
 
 ![Python](https://img.shields.io/badge/Python-3.12+-blue.svg)
 ![Node.js](https://img.shields.io/badge/Node.js-20.x-green.svg)
 ![FastAPI](https://img.shields.io/badge/FastAPI-Latest-009688.svg)
 ![Next.js](https://img.shields.io/badge/Next.js-14.2.24-black.svg)
 ![OpenAI](https://img.shields.io/badge/OpenAI-GPT4-412991.svg)
+![SQLite](https://img.shields.io/badge/SQLite-3.x-003B57.svg)
+![AWS S3](https://img.shields.io/badge/AWS_S3-Storage-FF9900.svg)
 
 ## 🎯 Overview
 
@@ -29,6 +31,7 @@ This sophisticated invoice processing system leverages LangChain’s multi-agent
 - FastAPI backend with WebSocket support
 - SQLite database (invoices.db) for structured data
 - AWS S3 for PDF storage
+- Scalable design supports thousands of invoices with minimal latency
 - Fully containerized deployment
 
 ## Table of Contents
@@ -62,6 +65,7 @@ This sophisticated invoice processing system leverages LangChain’s multi-agent
 #### Days 7–8: Database & Storage Upgrade
 - Migrated from JSON to SQLite with migrate_json_to_db.py
 - Integrated AWS S3 for PDF storage, optimizing WebSocket stability
+- Refined documentation and made demo video
 
 ## 🚧 Migration Challenges & Solutions
 
@@ -170,29 +174,35 @@ brim_invoice_nextjs/
 | SQLite (invoices.db) | AWS S3 (PDFs) |
 +-------------------+-----------------+
 ```
-
 ```mermaid
 flowchart TD
-    A[Next.js Frontend<br>Port: 3000] -->|WebSocket| B[FastAPI Backend<br>Port: 8000]
-    B --> C[Multi-Agent Workflow]
-    C --> D[SQLite Database<br>invoices.db]
-    C --> E[AWS S3<br>PDF Storage]
-    subgraph Pages
-        A --> A1[Upload]
-        A --> A2[Invoices]
-        A --> A3[Review]
-        A --> A4[Metrics]
-        A --> A5[Anomalies]
-    end
-    subgraph Agents
-        C --> C1[Extraction<br>gpt-4o-mini]
-        C --> C2[Validation<br>Pydantic]
-        C --> C3[PO Matching<br>Fuzzy]
-        C --> C4[Human Review<br>Confidence < 0.9]
-        C --> C5[Fallback<br>FAISS RAG]
-    end
+  A[Next.js Frontend<br>Port: 3000] -->|PDF Upload & UI Events| B[FastAPI Backend<br>Port: 8000]
+  B -->|WebSocket Updates| A
+  B -->|Delegate Tasks| C[Multi-Agent Workflow]
+  C -->|Store Metadata| D[SQLite Database<br>invoices.db]
+  C -->|Store PDFs| E[AWS S3<br>PDF Storage]
+  subgraph Pages
+    A --> A1[Upload]
+    A --> A2[Invoices]
+    A --> A3[Review]
+    A --> A4[Metrics]
+    A --> A5[Anomalies]
+  end
+  subgraph Agents
+    C --> C1[Extraction<br>gpt-4o-mini]
+    C --> C2[Validation<br>Pydantic]
+    C --> C3[PO Matching<br>Fuzzy]
+    C --> C4[Human Review<br>Confidence < 0.9]
+    C --> C5[Fallback<br>FAISS RAG]
+  end
 ```
 
+| Variant         | Purpose     | Key Features                  |
+|-----------------|-------------|-------------------------------|
+| Streamlit       | Prototyping | Simple UI, Python-based       |
+| Next.js         | Production  | WebSockets, Modern UI         |
+| AWS S3 + SQLite | Scalability | S3 storage, SQLite metadata   |
+```
 ## ⚙️ Setup Guide
 
 ### Prerequisites
@@ -202,26 +212,61 @@ flowchart TD
 
 > **Note**: The setup instructions assume a Unix-like environment (e.g., Linux, macOS). For Windows, use WSL or adjust commands accordingly.
 
-### Installation
+### Quick Start
 
-1. **Clone Repository:**
+1. **Clone the Repository:**
 ```bash
-git clone https://github.com/yancotta/brim_invoice_nextjs.git
+git clone https://github.com/YanCotta/brim_invoice_nextjs
 cd brim_invoice_nextjs
 git checkout feature/database-integration
 ```
 
-2. **Configure Environment:**
-Create `.env` in the root:
+2. **Set Up Environment Variables:**
+Create a `.env` file with your credentials:
 ```bash
-OPENAI_API_KEY=your_openai_key
+OPENAI_API_KEY=your_key
 AWS_ACCESS_KEY_ID=your_access_key
 AWS_SECRET_ACCESS_KEY=your_secret_key
 BUCKET_NAME=your_bucket_name
 ```
 
-3. **Run with Docker Compose:**
-Save this as `docker-compose.yml`:
+3. **Run the Application:**
+```bash
+docker compose up -d
+```
+
+4. **Verify Installation:**
+- Visit http://localhost:3000 to confirm the frontend is running
+- Access API docs at http://localhost:8000/docs
+
+### Detailed Installation
+
+1. **Configure AWS S3:**
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "PublicReadGetObject",
+      "Effect": "Allow",
+      "Principal": "*",
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::your-bucket-name/*"
+    }
+  ]
+}
+```
+- Disable "Block all public access" in bucket settings
+
+2. **Migration (Optional):**
+Only needed when upgrading from JSON-based versions:
+```bash
+python scripts/migrate_json_to_db.py --json-path data/processed/invoices.json
+sqlite3 invoices.db "SELECT COUNT(*) FROM invoices"
+```
+
+3. **Docker Configuration:**
+Save as `docker-compose.yml`:
 ```yaml
 version: '3.8'
 services:
@@ -245,20 +290,6 @@ services:
       - backend
 ```
 
-Then run:
-```bash
-docker compose up -d
-```
-
-4. **Access:**
-- Frontend: http://localhost:3000
-- API Docs: http://localhost:8000/docs
-
-5. **Verify Data (Optional):**
-```bash
-sqlite3 invoices.db "SELECT COUNT(*) FROM invoices"
-```
-
 ## 🚀 CI/CD & Docker Hub
 
 The feature/database-integration branch uses GitHub Actions for CI/CD, building and pushing Docker images on every push:
@@ -271,7 +302,9 @@ The feature/database-integration branch uses GitHub Actions for CI/CD, building 
   - Size: 299.7 MB
   - Updated: February 26, 2025
 
-**Built with ❤️ for Brim's Technical Challenge**
+> **Quick Start**: Pull images directly from Docker Hub and run `docker compose up -d` to skip building locally.
+
+**Built with ❤️ using LangChain, OpenAI, SQLite, AWS S3, and more for Brim's Technical Challenge**
 
 ### Key Improvements
 - Streamlined Sections: Condensed repetitive content (e.g., merged redundant setup instructions)
