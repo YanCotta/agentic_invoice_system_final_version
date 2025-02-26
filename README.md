@@ -372,6 +372,7 @@ flowchart TD
    ```bash
    git clone https://github.com/yourusername/brim_invoice_nextjs.git
    cd brim_invoice_nextjs
+   git checkout main
 
 2. **Build & Run with Docker**
    ```bash
@@ -467,41 +468,6 @@ Pre-built images are available at:
 - ✅ Critical system improvements
 - ✅ Project Refinement and Optimization
 - ✅ Documentation & Testing
-
-### Remaining Tasks (Days 8-10)
-- Day 8: Performance Optimization & Submission
-
-## Future Enhancement: Database-Backed Invoice Management
-
-### Context
-The current file-based system (`data/raw/invoices/`) suits the 10-day challenge’s scope. For 5,000 monthly invoices, a database was planned to enhance scalability and real-time features.
-
-### Proposed Solution
-- **Database**: PostgreSQL for invoice metadata (e.g., invoice_number, total_amount).
-- **Storage**: AWS S3 for PDF storage with versioning.
-
-#### Implementation Steps
-1. **Database Setup** (1-2 days): Initialize PostgreSQL with indexed tables.
-2. **Storage Integration** (1 day): Configure S3, update `main.py` to store PDF URLs.
-3. **API Updates** (1-2 days): Modify FastAPI endpoints (`review_api.py`) to query the database.
-4. **Frontend Adjustments** (1 day): Enhance `invoices.tsx` and `metrics.tsx` for real-time DB queries.
-
-### Benefits
-- Scalability for high invoice volumes
-- Fast, real-time data retrieval for Next.js UI
-- Secure, reliable storage
-
-### Why Not Implemented
-The 10-day timeline prioritized core functionality. The system’s modularity (e.g., `InvoiceProcessingWorkflow` in `orchestrator.py`) supports future database adoption.
-
-### Post-Submission Roadmap
-Over 3 weeks post-delivery:
-- **Week 1**: Database setup and data migration.
-- **Week 2**: S3 integration and API updates.
-- **Week 3**: Frontend enhancements for live updates.
-
-### Consideration
-Real-time WebSocket updates might strain DB connections; connection pooling could optimize performance.
 
 ---
 
