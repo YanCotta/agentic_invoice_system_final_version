@@ -8,11 +8,25 @@
 ![SQLite](https://img.shields.io/badge/SQLite-3.x-003B57.svg)
 ![AWS S3](https://img.shields.io/badge/AWS_S3-Storage-FF9900.svg)
 
-## 🎯 Overview
+## Overview
 
-This sophisticated invoice processing system leverages LangChain’s multi-agent workflow to automate extraction, validation, and purchase order (PO) matching. Designed as a technical challenge for Brim's Agentic AI Engineer position, it reduces manual processing time by over 75% while ensuring high accuracy through intelligent error handling and human-in-the-loop review. Key updates in the feature/database-integration branch include:
-- SQLite Migration: Replaced JSON-based storage with SQLite (invoices.db) for scalable, efficient metadata management.
-- AWS S3 Integration: Transitioned PDF storage to AWS S3 with public read access, enhancing reliability and scalability.
+This sophisticated invoice processing system, initially developed as a prototype for Brim’s Agentic AI Engineer technical challenge, leverages LangChain’s multi-agent workflow to automate extraction, validation, and purchase order (PO) matching. Designed to reduce manual processing time by over 75%, it ensures high accuracy through intelligent error handling and human-in-the-loop review processes. A standout feature is the implementation of Retrieval-Augmented Classification (RAC)—an adaptation of RAG—using FAISS with data/raw/test_samples/ (5 faulty PDFs) to minimize human intervention by classifying and resolving common errors autonomously.
+
+The project evolved in phases:
+
+- Prototype (Streamlit Version): A lightweight, Streamlit-based solution for small-scale local enterprises, relying on local JSON storage (structured_invoices.json) for quick deployment and testing.
+
+- Next.js Version: A robust iteration with a modern Next.js frontend, enhancing the UI with real-time WebSocket updates and maintaining JSON storage for simplicity.
+
+- Scalable Version (feature/database-integration Branch): The current, production-ready state, integrating SQLite (invoices.db) for efficient metadata management and AWS S3 for scalable PDF storage. While PostgreSQL was considered for larger-scale needs (e.g., 5,000+ invoices/month), SQLite was chosen as sufficient for the target volume of 5,000 invoices/month.
+
+This staged approach—starting small, iterating to a functional Next.js system, and scaling with cloud and database technologies—demonstrates a practical path from prototype to enterprise-ready solution.
+
+| Variant         | Purpose     | Key Features                  |
+|-----------------|-------------|-------------------------------|
+| Streamlit       | Prototyping | Simple UI, Python-based       |
+| Next.js         | Production  | WebSockets, Modern UI         |
+| AWS S3 + SQLite | Scalability | S3 storage, SQLite metadata   |
 
 ## 📋 Key Features
 
@@ -150,27 +164,27 @@ brim_invoice_nextjs/
 ### Architecture Diagram
 
 ```plaintext
-+-------------------+
-|    Next.js UI     |
-| - React, Next.js  |
-| - Tailwind CSS    |
-+-------------------+
-          ↓
-+---------+---------+
-| FastAPI Backend   |
-| - WebSocket       |
-+---------+---------+
-          ↓
-+---------+---------+
-| Multi-Agent Workflow |
-| - Extraction      |
-| - Validation      |
-| - PO Matching     |
-| - Human Review    |
-| - Fallback (FAISS)|
-+---------+---------+
-          ↓
-+---------+---------+
+           +-------------------+
+           |    Next.js UI     |
+           | - React, Next.js  |
+           | - Tailwind CSS    |
+           +-------------------+
+                     ↓
+           +---------+---------+
+           | FastAPI Backend   |
+           | - WebSocket       |
+           +---------+---------+
+                     ↓
+           +---------+---------+
+          |Multi-Agent Workflow|
+           | - Extraction      |
+           | - Validation      |
+           | - PO Matching     |
+           | - Human Review    |
+           | - Fallback (FAISS)|
+           +---------+---------+
+                     ↓
++---------+---------++---------+-------+
 | SQLite (invoices.db) | AWS S3 (PDFs) |
 +-------------------+-----------------+
 ```
@@ -202,7 +216,13 @@ flowchart TD
 | Streamlit       | Prototyping | Simple UI, Python-based       |
 | Next.js         | Production  | WebSockets, Modern UI         |
 | AWS S3 + SQLite | Scalability | S3 storage, SQLite metadata   |
-```
+
+### Key Improvements
+- Streamlined Sections: Condensed repetitive content (e.g., merged redundant setup instructions)
+- Enhanced Readability: Used consistent formatting, tables, and concise bullet points
+- Removed Redundancies: Eliminated duplicate file references and outdated instructions
+- Polished Flow: Organized sections logically (Overview → Features → Development → Architecture → Setup → CI/CD)
+
 ## ⚙️ Setup Guide
 
 ### Prerequisites
@@ -216,9 +236,9 @@ flowchart TD
 
 1. **Clone the Repository:**
 ```bash
-git clone https://github.com/YanCotta/brim_invoice_nextjs
-cd brim_invoice_nextjs
-git checkout feature/database-integration
+git clone -b feature/database-integration https://github.com/YanCotta/brim_invoice_nextjs.git brim_invoice_nextjs_feature
+cd brim_invoice_nextjs_feature
+git branch  # make sure you're in the right branch
 ```
 
 2. **Set Up Environment Variables:**
@@ -298,19 +318,13 @@ The feature/database-integration branch uses GitHub Actions for CI/CD, building 
   - Size: 1.01 GB
   - Updated: February 26, 2025
 - Frontend: yancotta/brim_invoice_nextjs_frontend
-  - Tag: feature-database-integration
+  - Tag: feature-database-integration 
   - Size: 299.7 MB
   - Updated: February 26, 2025
 
 > **Quick Start**: Pull images directly from Docker Hub and run `docker compose up -d` to skip building locally.
 
 **Built with ❤️ using LangChain, OpenAI, SQLite, AWS S3, and more for Brim's Technical Challenge**
-
-### Key Improvements
-- Streamlined Sections: Condensed repetitive content (e.g., merged redundant setup instructions)
-- Enhanced Readability: Used consistent formatting, tables, and concise bullet points
-- Removed Redundancies: Eliminated duplicate file references and outdated instructions
-- Polished Flow: Organized sections logically (Overview → Features → Development → Architecture → Setup → CI/CD)
 
 ## License
 
