@@ -211,12 +211,6 @@ flowchart TD
   end
 ```
 
-| Variant         | Purpose     | Key Features                  |
-|-----------------|-------------|-------------------------------|
-| Streamlit       | Prototyping | Simple UI, Python-based       |
-| Next.js         | Production  | WebSockets, Modern UI         |
-| AWS S3 + SQLite | Scalability | S3 storage, SQLite metadata   |
-
 ### Key Improvements
 - Streamlined Sections: Condensed repetitive content (e.g., merged redundant setup instructions)
 - Enhanced Readability: Used consistent formatting, tables, and concise bullet points
