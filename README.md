@@ -249,6 +249,32 @@ BUCKET_NAME=your_bucket_name
 docker compose up -d
 ```
 
+### Using Pre-built Images
+
+For the feature/database-integration branch, you can use pre-built Docker images from Docker Hub:
+```bash
+# Pull images from Docker Hub
+docker pull yancotta/brim_invoice_nextjs_backend:feature-database-integration
+docker pull yancotta/brim_invoice_nextjs_frontend:feature-database-integration
+```
+
+#### Image Details
+
+**Backend Image:**
+- Name: `yancotta/brim_invoice_nextjs_backend:feature-database-integration`
+- Description: Brim's Tech Test - Next.js Backend with SQLite and AWS S3 integration
+- GitHub: https://github.com/YanCotta/brim_invoice_nextjs
+- Size: 1.01 GB
+- OS/Arch: linux/amd64
+- Digest: bc0bfcdf4d1a
+
+**Frontend Image:**
+- Name: `yancotta/brim_invoice_nextjs_frontend:feature-database-integration`
+- Description: Brim's Tech Test - Next.js Frontend with enhanced database features
+- GitHub: https://github.com/YanCotta/brim_invoice_nextjs
+- Size: 299.7 MB
+- OS/Arch: linux/amd64
+
 4. **Verify Installation:**
 - Visit http://localhost:3000 to confirm the frontend is running
 - Access API docs at http://localhost:8000/docs
