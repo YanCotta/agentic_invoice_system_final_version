@@ -334,8 +334,86 @@ The feature/database-integration branch uses GitHub Actions for CI/CD, building 
   - Tag: feature-database-integration 
   - Size: 299.7 MB
   - Updated: February 26, 2025
+  > **Quick Start**: Pull images directly from Docker Hub and run `docker compose up -d` to skip building locally.
 
-> **Quick Start**: Pull images directly from Docker Hub and run `docker compose up -d` to skip building locally.
+  ## 🔄 Future Enhancement: Kubernetes Integration
+
+  ### Context
+  The current deployment uses Docker Compose to orchestrate FastAPI backend (with SQLite) and Next.js frontend (with AWS S3). While robust for prototyping, integrating Kubernetes (K8s) would enable enterprise-grade scalability for handling 5,000+ invoices monthly.
+
+  ### Proposed Solution
+  Kubernetes would deploy the system as a cluster with:
+  - **Backend Pods**: Multiple replicas of `yancotta/brim_invoice_nextjs_backend:feature-database-integration`
+  - **Frontend Pods**: Instances of `yancotta/brim_invoice_nextjs_frontend:feature-database-integration`
+  - **Storage**: SQLite via PersistentVolumeClaims (PVCs) and AWS S3
+  - **Services**: Internal ClusterIP and external LoadBalancer/Ingress
+
+  ### Implementation Guide
+
+  #### Cluster Setup (1 day)
+  - Local: Minikube (`minikube start`)
+  - Cloud: AWS EKS (`eksctl create cluster`)
+
+  #### Manifests (1-2 days)
+  - Create Deployments for backend/frontend
+  - Define Services for access
+  - Configure Secrets for API keys
+  - Setup PVC for database
+
+  Example manifest:
+  ```yaml
+  apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: backend
+  spec:
+    replicas: 2
+    selector:
+      matchLabels:
+        app: backend
+    template:
+      metadata:
+        labels:
+          app: backend
+      spec:
+        containers:
+        - name: backend
+          image: yancotta/brim_invoice_nextjs_backend:feature-database-integration
+          ports:
+          - containerPort: 8000
+  ```
+
+  #### Deployment (1 day)
+  ```bash
+  kubectl apply -f k8s/
+  minikube service frontend-service --url
+  ```
+
+  #### Scaling & Monitoring (1-2 days)
+  ```bash
+  kubectl autoscale deployment backend --min=2 --max=6 --cpu-percent=80
+  ```
+  - Integrate Prometheus/Grafana
+
+  ### Benefits
+  - **Scalability**: Auto-scaling pods
+  - **Resilience**: Self-healing system
+  - **Portability**: Multi-environment deployment
+  - **Modularity**: Compatible with existing architecture
+
+  ### Why Not Implemented
+  Time constraints within the 10-day challenge prioritized delivering a functional Docker Compose system. The modular design ensures minimal refactoring for future Kubernetes adoption.
+
+  ### Post-Submission Roadmap
+  5-day implementation plan:
+  1. Cluster setup
+  2. Manifest development
+  3. Testing
+  4. Deployment validation
+  5. Monitoring integration
+
+  This enhancement maintains compatibility with existing Docker Hub images while preparing for production scale.
+
 
 **Built with ❤️ using LangChain, OpenAI, SQLite, AWS S3, and more for Brim's Technical Challenge**
 
