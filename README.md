@@ -20,6 +20,12 @@ The project evolved in phases:
 
 This staged approach—starting small, iterating to a functional Next.js system, and scaling with cloud and database technologies—demonstrates a practical path from prototype to enterprise-ready solution.
 
+| Variant         | Purpose     | Key Features                  |
+|-----------------|-------------|-------------------------------|
+| Streamlit       | Prototyping | Simple UI, Python-based       |
+| Next.js         | Production  | WebSockets, Modern UI         |
+| AWS S3 + SQLite | Scalability | S3 storage, SQLite metadata   |
+
 ## 📋 Key Features
 
 - **Intelligent Processing Pipeline**
