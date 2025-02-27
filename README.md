@@ -210,13 +210,6 @@ flowchart TD
     C --> C5[Fallback<br>FAISS RAG]
   end
 ```
-
-### Key Improvements
-- Streamlined Sections: Condensed repetitive content (e.g., merged redundant setup instructions)
-- Enhanced Readability: Used consistent formatting, tables, and concise bullet points
-- Removed Redundancies: Eliminated duplicate file references and outdated instructions
-- Polished Flow: Organized sections logically (Overview → Features → Development → Architecture → Setup → CI/CD)
-
 ## ⚙️ Setup Guide
 
 ### Prerequisites
