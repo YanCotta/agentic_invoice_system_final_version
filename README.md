@@ -266,7 +266,7 @@ brim_invoice_nextjs/
       
 ```
 
-### Architecture Diagram (both project variants; different reps)
+### Architecture Diagram 
 
 ```plaintext
             +-------------------+
