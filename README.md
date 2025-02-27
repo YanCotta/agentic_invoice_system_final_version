@@ -6,9 +6,19 @@
 [![Next.js](https://img.shields.io/badge/Next.js-14.2.24-black.svg)](https://nextjs.org/)
 [![OpenAI](https://img.shields.io/badge/OpenAI-GPT4-412991.svg)](https://openai.com/)
 
-## 🎯 Overview
+## Overview
 
-A sophisticated invoice processing system that leverages LangChain's multi-agent workflow to automate extraction, validation, and purchase order (PO) matching. Built as a technical challenge for Brim's Agentic AI Engineer position, this solution aims to reduce manual processing time by over 75% while maintaining high accuracy through intelligent error handling and human-in-the-loop review processes.
+This sophisticated invoice processing system, initially developed as a prototype for Brim’s Agentic AI Engineer technical challenge, leverages LangChain’s multi-agent workflow to automate extraction, validation, and purchase order (PO) matching. Designed to reduce manual processing time by over 75%, it ensures high accuracy through intelligent error handling and human-in-the-loop review processes. A standout feature is the implementation of Retrieval-Augmented Classification (RAC)—an adaptation of RAG—using FAISS with data/raw/test_samples/ (5 faulty PDFs) to minimize human intervention by classifying and resolving common errors autonomously.
+
+The project evolved in phases:
+
+- Prototype (Streamlit Version): A lightweight, Streamlit-based solution for small-scale local enterprises, relying on local JSON storage (structured_invoices.json) for quick deployment and testing.
+
+- Next.js Version: A robust iteration with a modern Next.js frontend, enhancing the UI with real-time WebSocket updates and maintaining JSON storage for simplicity.
+
+- Scalable Version (feature/database-integration Branch): The current, production-ready state, integrating SQLite (invoices.db) for efficient metadata management and AWS S3 for scalable PDF storage. While PostgreSQL was considered for larger-scale needs (e.g., 5,000+ invoices/month), SQLite was chosen as sufficient for the target volume of 5,000 invoices/month.
+
+This staged approach—starting small, iterating to a functional Next.js system, and scaling with cloud and database technologies—demonstrates a practical path from prototype to enterprise-ready solution.
 
 ## 📋 Key Features
 
@@ -21,7 +31,7 @@ A sophisticated invoice processing system that leverages LangChain's multi-agent
 
 - **Modern Frontend Interface**
   - Next.js-powered dashboard
-  - Real-time processing updates
+  - Real-time processing updates with WebSockets
   - Interactive invoice review system
   - Comprehensive metrics visualization
 
@@ -157,7 +167,7 @@ A sophisticated invoice processing system that leverages LangChain's multi-agent
   - Merged `api/human_review_api.py` into `api/review_api.py`, consolidating review functionality into a single API module running on port 8000, eliminating redundancy.
   - Removed `workflows/pipeline.py` as its functionality is fully covered by `workflows/orchestrator.py`, ensuring a single, robust workflow manager.
   - Reviewed `frontend-nextjs/public/` directory and removed unnecessary SVG files (e.g., `file.svg`, `globe.svg`) not referenced in the application, reducing build size.
-  - Verified `frontend-nextjs/src/pages/anomalies.tsx` integration, confirming it’s linked to the backend via `lib/api.ts` for anomaly retrieval, and kept as a functional page.
+  - Verified `frontend-nextjs/src/pages/anomalies.tsx` integration, confirming it’s linked to the backend via `lib/api.ts` for anomaly retrieval, and kept as a functional page (tested by uploading a PDF of my resume).
   - Ensured `lib/api.ts` only handles API client logic without duplicating backend processing, maintaining clear separation of concerns.
 
 ## Architecture
@@ -253,14 +263,12 @@ brim_invoice_nextjs/
 ### Architecture Diagram (both project variants; different reps)
 
 ```plaintext
-+-------------------+       +-------------------+
-|   Streamlit UI    |       |    Next.js UI     |
-| (Python-based)    |       | (Production-ready)|
-| - Streamlit       |       | - React, Next.js  |
-|   Dashboard       |       | - Tailwind CSS    |
-+-------------------+       +-------------------+
-           |                         |
-           +-----------+-------------+
+            +-------------------+
+            |    Next.js UI     |
+            | (Production-ready)|
+            | - React, Next.js  |
+            | - Tailwind CSS    |
+            +-------------------+
                        |
                 +------+------+
                 | FastAPI     |
@@ -370,9 +378,9 @@ flowchart TD
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/yourusername/brim_invoice_nextjs.git
-   cd brim_invoice_nextjs
-   git checkout main
+   git clone https://github.com/YanCotta/brim_invoice_nextjs.git brim_invoice_nextjs_main
+   cd brim_invoice_nextjs_main
+   git branch #(make sure you are in the right branch)
 
 2. **Build & Run with Docker**
    ```bash
@@ -468,6 +476,7 @@ Pre-built images are available at:
 - ✅ Critical system improvements
 - ✅ Project Refinement and Optimization
 - ✅ Documentation & Testing
+- ✅ Dockerized and implemented CI/CD
 
 ---
 
